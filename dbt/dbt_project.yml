@@ -1,0 +1,23 @@
+name: automatedv_raw_vault_lab
+version: "0.1.0"
+profile: avlab
+
+require-dbt-version: [">=1.10.0", "<1.11.0"]
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+analysis-paths: ["analyses"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - target
+  - dbt_packages
+
+flags:
+  send_anonymous_usage_stats: false
+
+vars:
+  # AutomateDV のグローバル変数：ハッシュ方式（SHA = SHA-256）
+  hash: SHA
