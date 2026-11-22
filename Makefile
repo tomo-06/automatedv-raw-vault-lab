@@ -1,9 +1,17 @@
+ifneq (,$(wildcard .env))
+include .env
+export
+endif
+
 DBT_DIR   := dbt
 DBT       := uv run dbt
 DBT_FLAGS := --project-dir $(DBT_DIR) --profiles-dir $(DBT_DIR)
 
 .DEFAULT_GOAL := help
-.PHONY: help up down ps psql db-reset deps debug run test build clean
+.PHONY: help up down ps psql db-reset deps debug run test build clean load-houjin
+
+load-houjin: ## 法人番号 zip を raw_stage に投入（例: make load-houjin ZIP=data/raw/xxx.zip ARGS="--city-code 201"）
+	uv run python scripts/load_houjin.py $(ZIP) $(ARGS)
 
 help: ## ターゲット一覧を表示
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
